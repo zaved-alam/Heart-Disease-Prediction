@@ -1,1 +1,6 @@
-
+feature,test,statistic,p_value,cohens_d,95% CI (mean diff),significant (p<0.05)
+age,Welch t-test,-4.063563866474915,6.203955636901937e-05,-0.4661593088020447,"(-6.11, -2.12)",True
+trestbps,Welch t-test,-2.6385479869903046,0.008807545390762722,-0.3105461539415887,"(-9.53, -1.39)",True
+chol,Mann-Whitney U,9492.0,0.04668917507430684,,,True
+thalach,Welch t-test,7.928642817035473,6.107938033603391e-14,0.9354920554626224,"(14.64, 24.31)",True
+oldpeak,Mann-Whitney U,5833.5,1.5386103059956737e-12,,,True

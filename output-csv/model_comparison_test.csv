@@ -1,0 +1,8 @@
+model,accuracy,precision,recall,f1,roc_auc,selected
+Baseline (majority class),0.533,0.0,0.0,0.0,0.5,False
+Logistic Regression,0.833,0.846,0.786,0.815,0.932,True
+KNN,0.833,0.875,0.75,0.808,0.895,False
+Decision Tree,0.767,0.769,0.714,0.741,0.803,False
+Random Forest,0.8,0.864,0.679,0.76,0.919,False
+SVM (RBF),0.85,0.88,0.786,0.83,0.924,False
+Naive Bayes,0.833,0.875,0.75,0.808,0.924,False
