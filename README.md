@@ -1,124 +1,103 @@
-# Heart Disease Prediction (CSE570 Skill Based Assignment)
+# Heart Disease Prediction
 
-End-to-end machine-learning solution for predicting the presence of heart
-disease from the UCI Cleveland dataset (303 records, 14 attributes).
+End-to-end machine-learning solution that predicts the presence of heart disease
+from the UCI **Heart Disease (Cleveland)** dataset (303 records, 14 attributes).
+This is the **CSE570 Machine Learning with Python** skill-based assignment.
 
-This repository is organised so that development is **incremental**: every
-workflow stage is a small notebook combining multiple cells, so you can commit,
-review and explain each stage individually. This maps directly to **Q4 (GitHub,
-20 marks)** — meaningful progressive commits, branch-based pull requests, and a
-clean repository.
+The project is built around **three notebooks**, one per workflow phase, run in
+order. Each phase produces the input the next phase needs.
 
 ## Assignment coverage
 
-| Rubric section | Marks | Covered by |
+| Rubric section | Marks | Notebook(s) / evidence |
 |---|---|---|
-| Q1A Problem Statement + Dataset | 10 | `report/` + README |
-| Q2B-1a Data Cleaning & Visualization | 5 | `01_dataprep_*` |
-| Q2B-1b EDA & Statistical Analysis | 10 | `02_eda_*` |
-| Q2B-1c Model Development & Evaluation | 15 | `03_modeling_*` |
-| Q2B-2 Report + Technical Writing | 10 | `report/` |
+| Q1 Problem Statement + Dataset | 10 | This README + `CSE570_Skill_Based_Assignment.pdf` |
+| Q2B-1a Data Cleaning & Visualization | 5 | `01_Data_Preparation_and_Visualization.ipynb` |
+| Q2B-1b EDA & Statistical Analysis | 10 | `02_EDA_and_Statistical_Analysis.ipynb` |
+| Q2B-1c Model Development & Evaluation | 15 | `03_Model_Development_and_Evaluation.ipynb` |
+| Q2B-2 Report + Technical Writing | 10 | report |
 | Q2B-3 Viva | 20 | — |
-| Q3 LinkedIn | 10 | `linkedin/` evidence |
-| Q4 GitHub | 20 | this repository |
+| Q3 LinkedIn Engagement | 10 | LinkedIn post + evidence |
+| Q4 GitHub Contributions | 20 | this repository |
 
-## Project workflow / run order
+## Project overview
 
-These notebooks must be run **in order** because each reads the output file of
-the previous stage. Each notebook groups together the multiple cells of one
-workflow stage.
+**Problem.** Determine whether a patient has heart disease. The clinical signs
+in the dataset (age, blood pressure, cholesterol, max heart rate, resting ECG,
+slope, number of major vessels, thalassemia, etc.) are common but noisy
+screening signals; a reliable, interpretable model supports triage and
+prioritisation.
 
-### Phase 1 — Data Preparation & Visualization (`01_dataprep_*`)
-| Run | Notebook | Stage |
-|---|---|---|
-| 1 | `01_dataprep_01_setup_and_loading` | Load UCI Cleveland data (+ schema) |
-| 2 | `01_dataprep_02_data_cleaning` | Missing values, duplicates, dtypes, target binarization, outliers |
-| 3 | `01_dataprep_03_train_test_split` | Stratified 80/20 split (leakage-safe) |
-| 4 | `01_dataprep_04_preprocessing_pipeline` | ColumnTransformer pipeline |
-| 5 | `01_dataprep_05_visualizations` | Target / numeric / categorical / correlation plots |
-| 6 | `01_dataprep_06_save_clean` | Save `heart_disease_clean.csv` |
+**Target variable.** `num` (0–4) is binarised: `0` = no disease, `1` = disease
+present.
 
-### Phase 2 — EDA & Statistical Analysis (`02_eda_*`)
-| Run | Notebook | Stage |
-|---|---|---|
-| 7 | `02_eda_01_setup_and_load` | Load cleaned data |
-| 8 | `02_eda_02_univariate_analysis` | Descriptive stats, skewness, distributions |
-| 9 | `02_eda_03_numeric_bivariate` | Group comparison, boxplots, Welch / Mann-Whitney tests |
-| 10 | `02_eda_04_categorical_bivariate` | Chi-square, Cramér's V, proportion bars |
-| 11 | `02_eda_05_multivariate_analysis` | Correlation matrix, pairplot |
-| 12 | `02_eda_06_feature_selection` | Backward elimination |
-| 13 | `02_eda_07_summary_and_save` | Summary table + save stats CSVs |
+**Success criteria.** Because a missed diagnosis (false negative) is the costly
+error, the models are compared primarily on **F1 score and recall**, alongside
+accuracy, precision and ROC-AUC.
 
-### Phase 3 — Model Development & Evaluation (`03_modeling_*`)
-| Run | Notebook | Stage |
-|---|---|---|
-| 14 | `03_modeling_01_setup_split_pipeline` | Setup, split, pipeline |
-| 15 | `03_modeling_02_baseline_dummy` | Baseline (majority class) |
-| 16 | `03_modeling_03_model_zoo_cv` | 6 models, 5-fold stratified CV |
-| 17 | `03_modeling_04_hyperparameter_tuning` | GridSearchCV (scoring = F1) |
-| 18 | `03_modeling_05_final_model_selection` | Select final model by CV only |
-| 19 | `03_modeling_06_test_evaluation` | Test metrics, confusion matrices, ROC, report, bootstrap CIs |
-| 20 | `03_modeling_07_model_interpretation` | Feature importance / coefficients |
-| 21 | `03_modeling_08_save_model` | Persist model (`best_heart_disease_model.joblib`) |
-| 22 | `03_modeling_09_limitations` | Limitations & improvements |
-
-## Dependencies
-
-`requirements.txt` (install with `pip install -r requirements.txt`):
-numpy, pandas, matplotlib, seaborn, scipy, scikit-learn, statsmodels, joblib.
+**Workflow (leakage-safe).** Tune/select on the training set only; the held-out
+20% test set is touched once at the end.
 
 ## Dataset
 
-- **Source:** UCI Machine Learning Repository — Heart Disease (Cleveland,
-  303 records). https://archive.ics.uci.edu/dataset/45/heart+disease
-- **File:** `processed.cleveland.data` (comma-separated, no header, missing
-  values encoded as `?`). If the download in `01_dataprep_01` fails, place the
-  file next to the notebooks.
+- **Source:** UCI Machine Learning Repository — Heart Disease (Cleveland),
+  303 instances, 14 attributes.
+  https://archive.ics.uci.edu/dataset/45/heart+disease
+- **Format:** `processed.cleveland.data`, comma-separated, no header; missing
+  values are encoded as `?`. It is downloaded automatically by the first
+  notebook (with a fallback to a local file).
+- **After cleaning:** 297 rows, 13 features + binary target.
 
-## Suggested GitHub workflow (for Q4 marks)
+## Notebooks
 
-Develop each phase on its own branch and merge with a pull request:
+| Run | Notebook | What it does | Key output |
+|---|---|---|---|
+| 1 | `01_Data_Preparation_and_Visualization.ipynb` | Load data; handle missing values, duplicates, datatypes; binarise target; outlier inspection; stratified 80/20 split; ColumnTransformer pipeline (scaling + one-hot encoding); visualisations | `heart_disease_clean.csv`, plots |
+| 2 | `02_EDA_and_Statistical_Analysis.ipynb` | Univariate/bivariate/multivariate EDA; descriptive stats, distributions, group comparisons; statistical tests (Welch's t-test, Mann-Whitney U, chi-square + Cramér's V); backward-elimination feature selection; summary of findings | `stat_tests_numeric.csv`, `stat_tests_categorical.csv`, `correlations_with_target.csv` |
+| 3 | `03_Model_Development_and_Evaluation.ipynb` | Baseline (majority class); six classifiers (Logistic Regression, KNN, Decision Tree, Random Forest, SVM, Naive Bayes) with 5-fold stratified CV; hyperparameter tuning (GridSearchCV, F1); CV-based final selection; test-set evaluation (confusion matrix, ROC, classification report, bootstrap 95% CIs); feature interpretation; save all six tuned models + final model | `models/*.joblib`, `model_comparison_test.csv`, `final_model_bootstrap_ci.csv`, `best_heart_disease_model.joblib`, plots |
+
+Run the notebooks **in order** (1 → 2 → 3).
+
+## Dependencies
+
+Python 3.11+. Install with:
 
 ```bash
-git init
-git add README.md requirements.txt split_notebooks.py processed.cleveland.data
-git commit -m "chore: initial repo skeleton, dataset and requirements"
-
-git checkout -b feature/data-preparation
-# commit each dataprep notebook individually, with a specific message, e.g.:
-git add 01_dataprep_01_setup_and_loading.ipynb
-git commit -m "add: load UCI Cleveland heart-disease data with dtype schema"
-git add 01_dataprep_02_data_cleaning.ipynb
-git commit -m "add: clean data - missing values, duplicates, dtypes, target binary, outliers"
-git add 01_dataprep_03_train_test_split.ipynb
-git commit -m "add: leakage-safe stratified 80/20 train-test split"
-# ... and so on for every stage ...
-git checkout main
-git merge --no-ff feature/data-preparation -m "feat(data-preparation): complete Phase 1"
-
-git checkout -b feature/eda-statistical
-# similarly commit 02_eda_* one by one, then PR/merge
-
-git checkout -b feature/modeling
-# similarly commit 03_modeling_* one by one, then PR/merge
+pip install numpy pandas matplotlib seaborn scipy scikit-learn statsmodels joblib
 ```
 
-On GitHub: open a pull request per branch with a meaningful title/description
-(e.g. "Add Phase 2 — EDA & statistical analysis"). That earns the *Pull
-Requests (5 marks)* and *Commits (10 marks)* components.
+## Results
 
-## Regenerating the step notebooks
+The final model is selected by the highest **tuned Cross-Validation F1** on the
+training set. Results are regenerated by running notebook 3, but the repository
+includes the current outputs:
 
-`split_notebooks.py` regenerates all stage notebooks from the three original
-notebooks. If you edit the originals, re-run it and re-commit the updated files.
+- `models/` — all **six tuned models** saved as `.joblib`, e.g.
+  `Logistic_Regression.joblib`, `KNN.joblib`, `Random_Forest.joblib`
+- `best_heart_disease_model.joblib` — the serialised **final model**
+  (Logistic Regression, best tuned CV F1 = 0.804)
+- `model_comparison_test.csv` — test-set metrics for all tuned models + baseline
+- `final_model_bootstrap_ci.csv` — bootstrap 95% CIs for the final model
+- `roc_curves.png`, `confusion_matrices.png`, `rf_feature_importance.png`,
+  `lr_coefficients.png` — key evaluation plots
 
-```
-python split_notebooks.py   # rebuilds the notebooks_steps/ folder
-```
+## Repository structure
 
-> Each output notebook groups a stage's markdown + code into one file without
-> splitting individual cells. During regeneration, the script also strips
-> internal workflow annotations (e.g. `Day 1-2`, `Unit I/II/IV`, syllabus
-> alignment notes) from headings and body text so the submitted notebooks are
-> clean. The repo is not yet a git repository — run `git init` to begin
-> committing.
+- `01_Data_Preparation_and_Visualization.ipynb` — load & clean data, split, preprocess pipeline, visualisations
+- `02_EDA_and_Statistical_Analysis.ipynb` — EDA, statistical tests, feature selection, summary
+- `03_Model_Development_and_Evaluation.ipynb` — baseline, 6 models, tuning, CV selection, evaluation, save models
+- `CSE570_Skill_Based_Assignment.pdf` — assignment brief
+- `requirements.txt` — Python dependencies
+- `.gitignore` — ignores generated outputs (CSVs, PNGs)
+- `models/` — all six tuned models (kept); other generated outputs (`heart_disease_clean.csv`, CSVs, PNGs) are regenerated at runtime and ignored by git
+
+## GitHub workflow
+
+Develop and commit each notebook/project stage incrementally, e.g. one branch
+per notebook merged via a pull request. This satisfies the "incremental version
+control" and "pull requests" components of Q4.
+
+## Disclaimer
+
+Built for the CSE570 Machine Learning with Python course. The dataset is a
+classic academic benchmark, not a substitute for clinical diagnosis.
